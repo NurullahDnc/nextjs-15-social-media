@@ -15,10 +15,10 @@ export const metadata: Metadata = {
   title: {
     
     // Örneğin: "Ana Sayfa" başlığı kullanıldığında, sonuç "Ana Sayfa | bugbook" olacaktır.
-    template: "%s | bugbook",
+    template: "%s | Meyras",
 
     // 'default', başlığın bir bölümde belirtilmediği durumda kullanılacak varsayılan başlıktır.
-    default: "bugbook",
+    default: "Meyras",
   },
   description: "The social media app for powernerds",
 };

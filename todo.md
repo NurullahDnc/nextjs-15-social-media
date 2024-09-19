@@ -17,3 +17,12 @@ Lucia   =>  Next.js projelerinde basit ve özelleştirilebilir bir kimlik doğru
 
 * sql tabloaları kucuk harfle başlar .
 * 
+
+
+
+
+/////////
+
+
+sessionProvider sarmaladı 
+navbar yapıldı 
