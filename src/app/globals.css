@@ -74,3 +74,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+button:focus {
+  outline: none;
+  border: none;  
+}
