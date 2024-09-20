@@ -6,7 +6,7 @@ import { formatRelativeDate } from "@/lib/utils";
 interface PostProps {
   post: PostData;
 }
-export default function Posts({ post }: PostProps) {
+export default function Post({ post }: PostProps) {
   return (
     <article className="space-y-3 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex flex-wrap gap-3">
@@ -25,7 +25,7 @@ export default function Posts({ post }: PostProps) {
             href={`/users/${post.id}`}
             className="block text-sm text-muted-foreground hover:underline"
           >
-            {formatRelativeDate(post.createdAt)}
+            {/* {formatRelativeDate(post.createdAt)} */}
           </Link>
         </div>
       </div>

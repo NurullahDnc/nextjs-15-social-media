@@ -8,10 +8,13 @@ import "./styles.css";
 import UserAvatar from "@/components/UserAvatar";
 import { useSession } from "@/app/(main)/SessionProvider";
 import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
 
 //Post Create components
 export default function PostEditor() {
   const { user } = useSession();
+
+  const queryClient = useQueryClient();
 
   const editor = useEditor({
     extensions: [
@@ -34,6 +37,9 @@ export default function PostEditor() {
   async function onSubmit() {
     await submitPost(input);
     editor?.commands.clearContent(); //editor icerik temizleniyor
+
+    // İşlem tamamlandığında verileri yeniden sorgulamak için geçersiz kıl
+    queryClient.refetchQueries({ queryKey: ["post-feed", "for-you"] });
   }
 
   return (

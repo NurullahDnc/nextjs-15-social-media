@@ -34,6 +34,6 @@ tiptap  => icerik duzenleme?
 - arkadaslar ekleme comporetti ekledni
 - suspanse eklendi 
 - trend # comporetni eklendi sql sorgusu yazıldı.
-- 
+- useQuery kulanıldı ve post cekildi - data cekerken benzersiz key ver  delete create isleminde o key ile gecersiz kıl yeninden sorgu yap
 
 
