@@ -43,8 +43,8 @@ export async function WhoToFllow() {
     <div className="space-y-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="text-lg font-bold">Takip edilecek kişiler</div>
 
-      {usersToFllow.map((user) => (
-        <div className="flex items-center justify-between gap-3">
+      {usersToFllow.map((user, index) => (
+        <div key={index} className="flex items-center justify-between gap-3">
           <Link href={``} className="flex items-center gap-3">
             <UserAvatar avatarUrl={user.avatarUrl} className="flex-none" />
             <div>
