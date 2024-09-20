@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
-import { PasswordInput } from "@/components/passwordInput";
+import { PasswordInput } from "@/components/PasswordInput";
 import LodingButton from "@/components/LodingButton";
 import { login } from "./action";
 

@@ -21,12 +21,14 @@ Lucia   =>  Next.js projelerinde basit ve özelleştirilebilir bir kimlik doğru
 
 
 
-/////////
+/////////--YAPILANLAR--
 
 
-- auth islemleri yapıldı Lucia kulanıldı
-- sessionProvider sarmaladı 
-- navbar yapıldı search buttton ve kulanıcı icin acılır menu ekledni
-- dark mode eklendi ui.shadcn 
-- menuBar yapıldı  mobil ekranlarda sayfanın altında gozukecek, buyuk ekranlarda sol uste gosterilecek 
-- 
+- Kimlik doğrulama işlemleri gerçekleştirildi, Lucia kullanıldı.
+- Layout, session provider ile sarmalandı.
+- Navbar oluşturuldu; arama butonu ve kullanıcı için açılır menü eklendi.
+- Karanlık mod, UI.shadcn ile eklendi.
+- MenuBar oluşturuldu; mobil ekranlarda sayfanın altında, büyük ekranlarda sol üstte gösterilecek.
+
+
+

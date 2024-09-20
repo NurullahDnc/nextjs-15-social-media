@@ -14,15 +14,6 @@ export async function signup(
   try {
     const { username, email, password } = siginUpSchema.parse(credentials);
 
-    const passwordHash = await hash(password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1,
-    });
-
-    const userId = generateIdFromEntropySize(10);
-
     const existingUsername = await prisma.user.findFirst({
       where: {
         username: {
@@ -48,6 +39,15 @@ export async function signup(
     if (existingEmail) {
       return { error: "Bu e-posta zaten kullanılıyor." };
     }
+
+    const passwordHash = await hash(password, {
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    });
+
+    const userId = generateIdFromEntropySize(10);
 
     const createUser = await prisma.user.create({
       data: {
