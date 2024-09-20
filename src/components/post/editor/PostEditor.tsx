@@ -9,6 +9,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { useSession } from "@/app/(main)/SessionProvider";
 import { Button } from "@/components/ui/button";
 
+//Post Create components
 export default function PostEditor() {
   const { user } = useSession();
 

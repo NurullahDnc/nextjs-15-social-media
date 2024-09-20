@@ -29,6 +29,8 @@ tiptap  => icerik duzenleme?
 - Navbar oluşturuldu; arama butonu ve kullanıcı için açılır menü eklendi.
 - Karanlık mod, UI.shadcn ile eklendi.
 - MenuBar oluşturuldu; mobil ekranlarda sayfanın altında, büyük ekranlarda sol üstte gösterilecek.
-
+- Tiptap  editor kulanıldı ve post olusturuldu
+- olustuurlan postlar ekranda gosterildi
+- 
 
 
