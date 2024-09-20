@@ -31,6 +31,9 @@ tiptap  => icerik duzenleme?
 - MenuBar oluşturuldu; mobil ekranlarda sayfanın altında, büyük ekranlarda sol üstte gösterilecek.
 - Tiptap  editor kulanıldı ve post olusturuldu
 - olustuurlan postlar ekranda gosterildi
+- arkadaslar ekleme comporetti ekledni
+- suspanse eklendi 
+- trend # comporetni eklendi sql sorgusu yazıldı.
 - 
 
 

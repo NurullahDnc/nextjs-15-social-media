@@ -22,3 +22,11 @@ export function formatRelativeDate(from: Date) {
     }
   }
 }
+
+
+export function formatNumber(n: number): string {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",  //sayıyı kısaltarak (örneğin, 1,000 yerine 1K)
+    maximumFractionDigits: 1,  // 1 basamak gosterilecek
+  }).format(n);
+}
