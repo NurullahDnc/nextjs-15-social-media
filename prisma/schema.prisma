@@ -16,16 +16,18 @@ datasource db {
 }
 
 model User {
-  id          String    @id
-  username    String    @unique
-  displayName String
-  email       String?   @unique
+  id           String    @id
+  username     String    @unique
+  displayName  String
+  email        String?   @unique
   passwordHash String?
-  googleId    String?
-  avatarUrl   String?
-  bio         String?
+  googleId     String?
+  avatarUrl    String?
+  bio          String?
   sessions     Session[]
-  createAt    DateTime  @default(now())
+  posts        Post[]
+
+  createAt DateTime @default(now())
 
   @@map("users")
 }
@@ -37,5 +39,16 @@ model Session {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Kullanıcı silindiğinde, ilgili session da silinir.
 
-  @@map("sessions")  // Model adı veritabanında yeniden adlandırılır.
+  @@map("sessions") // Model adı veritabanında yeniden adlandırılır.
+}
+
+model Post {
+  id      String @id @default(cuid())
+  content String
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Kullanıcı silindiğinde, ilgili session da silinir.
+
+  createAt DateTime @default(now())
+
+  @@map("posts")
 }

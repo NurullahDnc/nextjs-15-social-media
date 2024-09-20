@@ -1,3 +1,4 @@
+import PostEditor from "@/components/post/editor/PostEditor";
 import Image from "next/image";
 
 export default function Home() {
@@ -5,7 +6,7 @@ export default function Home() {
     <main className="h-[200vh] bg-red-300 w-full">
       <div className="w-full ">
 
-        merhabas
+        <PostEditor />
       </div>
     </main>
   );

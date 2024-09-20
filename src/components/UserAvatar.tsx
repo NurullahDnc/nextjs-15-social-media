@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {
   className?: string;
-  size: number;
+  size?: number;
   avatarUrl?: string | undefined | null;
 }
 export default function UserAvatar({

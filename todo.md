@@ -4,7 +4,7 @@
 postgresql   =>   db 
 prisma   => 
 Lucia   =>  Next.js projelerinde basit ve özelleştirilebilir bir kimlik doğrulama aracıdır.
-
+tiptap  => icerik duzenleme?
 
 
 
