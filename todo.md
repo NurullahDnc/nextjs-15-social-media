@@ -44,6 +44,12 @@ flatmap
 - Post oluşturulduktan sonra useMutation ile UI güncellendi. Bu, kullanıcıya yeni gönderinin hemen görünmesini sağlar.
 - Gönderi silme için useMutation fonksiyonu yazıldı.
 - Gönderi silme işlemi gerçekleştirildi ve modal açıldı.
+- prisma da follow tablosu olusturuldu. / apiler yazıldı get, create, edit, delete
+- Takip et / çıkar özelliği eklendi ve optimistik güncelleme kullanıldı.
+
+
+
+
 
 
 
@@ -60,7 +66,8 @@ sayfa sonuna geli,nce 200 kaldır
 
 
 -----------------------------------------------------------------------------------------------------------------------------
-// -useQueryClient  kulanımı 
+<!-- * useQueryClient  kulanımı -->
+//  
 
 (setQueryData: Mutasyon başarıyla tamamlandıktan sonra, yeni gönderi eklenerek mevcut veriler güncelleniyor.)
 
@@ -114,15 +121,29 @@ export function useSubmitPostMutation() {
 
 */
 
-////////////
+-----------------------------------------------------------------------------------------------------------------------------
 
-const queryFilter: QueryFilters = { queryKey: ["post-feed"] };  ==>  queryClient üzerinden ilgili sorguların cache'deki verilerini yönetebiliyorsunuz. Örneğin, bu anahtara sahip sorguları iptal edebilir, güncelleyebilir veya yeniden fetch edebilirsiniz.
+
 
 
 ///////////
-
+<!--* Tailwind -->
 ana div uzerine gelince hover olması, ana div ref ver(group-hover)  =>  group-hover/post:opacity-100
 
-queryClient calısma mantıgı =>  onClick={() => mutation.mutate(post.id, { onSuccess: onClose })}
 
 
+///////////
+<!--* queryClient -->
+-const queryFilter: QueryFilters = { queryKey: ["post-feed"] };  ==>  queryClient üzerinden ilgili sorguların cache'deki verilerini yönetebiliyorsunuz. Örneğin, bu anahtara sahip sorguları iptal edebilir,       güncelleyebilir  veya yeniden fetch edebilirsiniz.
+
+- queryClient calısma mantıgı =>  onClick={() => mutation.mutate(post.id, { onSuccess: onClose })}
+
+
+
+///////// 
+<!--*Prisma   -->
+
+- prisma.upsert         =>  prismada eğer belirtilen kayıt zaten mevcutsa, onu günceller; eğer mevcut değilse, yeni bir kayıt oluşturur.
+
+- prisma.delete:        =>  Tekil bir kaydı siler; belirli bir kayıt için kullanılır.
+- prisma.deleteMany:    =>  Birden fazla kaydı siler; bir dizi kaydı belirli koşullara göre hedef alır.
