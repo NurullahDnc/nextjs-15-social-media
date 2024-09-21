@@ -21,6 +21,11 @@ tiptap  => icerik duzenleme?
 
 
 
+
+bak
+
+flatmap
+
 /////////--YAPILANLAR--
 
 
@@ -35,5 +40,5 @@ tiptap  => icerik duzenleme?
 - suspanse eklendi 
 - trend # comporetni eklendi sql sorgusu yazıldı.
 - useQuery kulanıldı ve post cekildi - data cekerken benzersiz key ver  delete create isleminde o key ile gecersiz kıl yeninden sorgu yap
-
+- anasayfada asagıya indikce postlar  cekildi, 
 
