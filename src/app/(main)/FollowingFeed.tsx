@@ -7,8 +7,7 @@ import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
-// Sonsuz kaydırma ile "Posts" gönderileri yükler ve gösterir.
-export default function ForYouFeed() {
+export default function FollowingFeed() {
   const {
     data,
     fetchNextPage,
@@ -17,11 +16,11 @@ export default function ForYouFeed() {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["post-feed", "for-you"],
+    queryKey: ["post-feed", "following"],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
-          "/api/posts/for-you",
+          "/api/posts/following",
           pageParam ? { searchParams: { cursor: pageParam } } : {},
         )
         .json<PostsPage>(),
@@ -46,7 +45,7 @@ export default function ForYouFeed() {
   if (status === "success" && !posts.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground my-14 flex justify-center items-center text-lg">
-        Henüz kimse bir şey paylaşmadı.
+        Hiç gönderi bulunamadı. Burada gönderileri görmek için insanları takip etmeye başlayın.
       </p>
     );
   }

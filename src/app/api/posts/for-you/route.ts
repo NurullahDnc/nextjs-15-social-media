@@ -8,8 +8,6 @@ export async function GET(req: NextRequest) {
     const { user } = await validateRequest();
 
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined  // son olan postId
-
-    console.log("cursor cursor ", cursor );
     
     const pageSize = 10
 
