@@ -42,10 +42,17 @@ flatmap
 - useQuery kulanıldı ve post cekildi - data cekerken benzersiz key ver  delete create isleminde o key ile gecersiz kıl yeninden sorgu yap
 - anasayfada asagıya indikce postlar  cekildi, 
 - Post oluşturulduktan sonra useMutation ile UI güncellendi. Bu, kullanıcıya yeni gönderinin hemen görünmesini sağlar.
-- 
+- Gönderi silme için useMutation fonksiyonu yazıldı.
+- Gönderi silme işlemi gerçekleştirildi ve modal açıldı.
 
 
 
+
+
+
+
+
+sayfa sonuna geli,nce 200 kaldır
 
 
 
@@ -106,4 +113,16 @@ export function useSubmitPostMutation() {
 --
 
 */
+
+////////////
+
+const queryFilter: QueryFilters = { queryKey: ["post-feed"] };  ==>  queryClient üzerinden ilgili sorguların cache'deki verilerini yönetebiliyorsunuz. Örneğin, bu anahtara sahip sorguları iptal edebilir, güncelleyebilir veya yeniden fetch edebilirsiniz.
+
+
+///////////
+
+ana div uzerine gelince hover olması, ana div ref ver(group-hover)  =>  group-hover/post:opacity-100
+
+queryClient calısma mantıgı =>  onClick={() => mutation.mutate(post.id, { onSuccess: onClose })}
+
 
