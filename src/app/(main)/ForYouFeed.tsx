@@ -7,6 +7,7 @@ import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
+// Sonsuz kaydırma ile "Posts" gönderileri yükler ve gösterir.
 export default function ForYouFeed() {
   const {
     data,

@@ -13,8 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
 import { PasswordInput } from "@/components/PasswordInput";
-import LodingButton from "@/components/LodingButton";
 import { login } from "./action";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function SignUpForm() {
   const form = useForm<LoginValues>({
@@ -68,9 +68,9 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <LodingButton className="w-full" type="submit" loading={isPending}>
+        <LoadingButton className="w-full" type="submit" loading={isPending}>
           Giriş Yap
-        </LodingButton>
+        </LoadingButton>
       </form>
     </Form>
   );

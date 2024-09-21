@@ -3,18 +3,22 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
-import submitPost from "./action";
+import submitPost from "./actions";
 import "./styles.css";
 import UserAvatar from "@/components/UserAvatar";
 import { useSession } from "@/app/(main)/SessionProvider";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSubmitPostMutation } from "./mutations";
+import LoadingButton from "@/components/LoadingButton";
 
 //Post Create components
 export default function PostEditor() {
   const { user } = useSession();
 
   const queryClient = useQueryClient();
+  const mutation = useSubmitPostMutation();
+
 
   const editor = useEditor({
     extensions: [
@@ -35,11 +39,15 @@ export default function PostEditor() {
     }) || "";
 
   async function onSubmit() {
-    await submitPost(input);
-    editor?.commands.clearContent(); //editor icerik temizleniyor
+    // İşlem tamamlandığında verileri yeniden sorgulamak için geçersiz kıl  - farklı yontem kulanıldı.
+    // queryClient.refetchQueries({ queryKey: ["post-feed", "for-you"] });
 
-    // İşlem tamamlandığında verileri yeniden sorgulamak için geçersiz kıl
-    queryClient.refetchQueries({ queryKey: ["post-feed", "for-you"] });
+    // mutation.mutate(input, { ... }) ile input, submitPost fonksiyonuna otomatik olarak props gönderilir.
+    mutation.mutate(input, {  
+      onSuccess: () => {
+        editor?.commands.clearContent();
+      },
+    });
   }
 
   return (
@@ -52,13 +60,14 @@ export default function PostEditor() {
         />
       </div>
       <div className="flex justify-end">
-        <Button
+        <LoadingButton
           onClick={onSubmit}
           disabled={!input.trim()}
+          loading={mutation.isPending}
           className="min-w-20 cursor-pointer"
         >
           Gönder
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { signup } from "./action";
 import { PasswordInput } from "@/components/PasswordInput";
-import LodingButton from "@/components/LodingButton";
+ import LoadingButton from "@/components/LoadingButton";
 
 export default function SignUpForm() {
   const form = useForm<SiginUpValues>({
@@ -86,9 +86,9 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <LodingButton className="w-full" type="submit" loading={isPending}>
+        <LoadingButton className="w-full" type="submit" loading={isPending}>
           Hesap Oluştur
-        </LodingButton>
+        </LoadingButton>
       </form>
     </Form>
   );
