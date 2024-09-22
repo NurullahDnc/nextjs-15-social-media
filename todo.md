@@ -13,7 +13,7 @@ tiptap  => icerik duzenleme?
 
 
 
-//notes: 
+ <!--?  notes  -->
 
 * sql tabloaları kucuk harfle başlar .
 * 
@@ -23,10 +23,9 @@ tiptap  => icerik duzenleme?
 
 
 bak
-
 flatmap
 
-/////////--YAPILANLAR--
+<!--?  --YAPILANLAR-- -->
 
 
 - Kimlik doğrulama işlemleri gerçekleştirildi, Lucia kullanıldı.
@@ -46,7 +45,7 @@ flatmap
 - Gönderi silme işlemi gerçekleştirildi ve modal açıldı.
 - prisma da follow tablosu olusturuldu. / apiler yazıldı get, create, edit, delete
 - Takip et / çıkar özelliği eklendi ve optimistik güncelleme kullanıldı.
-
+- user profil bitti 
 
 
 
@@ -60,6 +59,10 @@ flatmap
 
 sayfa sonuna geli,nce 200 kaldır
 
+
+
+
+----utils kontrol et neden props geciliyor.
 
 
 

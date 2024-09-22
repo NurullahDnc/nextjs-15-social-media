@@ -1,0 +1,41 @@
+import { validateRequest } from "@/auth";
+import prisma from "@/lib/prisma";
+import { getPostDataInclude, PostsPage } from "@/lib/types";
+import { NextRequest } from "next/server";
+
+export async function GET(
+  req: NextRequest,
+  { params: { userId } }: { params: { userId: string } },
+) {
+  try {
+    const { user } = await validateRequest();
+
+    const cursor = req.nextUrl.searchParams.get("cursor") || undefined;  
+
+    const pageSize = 10;
+
+    if (!user) throw new Error("Yetkisiz giriş");
+
+    const posts = await prisma.post.findMany({
+      where: { userId },
+      include: getPostDataInclude(user.id),
+      orderBy: { createdAt: "desc" },
+      take: pageSize + 1,  
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
+    });
+
+    const nextCursor = posts.length > pageSize ? posts[pageSize].id : undefined;
+
+    const data: PostsPage = {
+      posts: posts.slice(0, pageSize),
+      nextCursor,
+    };
+
+    return Response.json(data);
+  } catch (error) {
+    console.log(error);
+
+    return Response.json({ error: "Internal Error" }, { status: 500 });
+  }
+}
