@@ -30,11 +30,16 @@ export async function WhoToFllow() {
 
   if (!user) return null;
 
+  // Veritabanından takip edilebilecek kullanıcıları getiren sorgu
   const usersToFllow = await prisma.user.findMany({
     where: {
+
+      // Şu anki kullanıcının dışında diğer kullanıcıları bul
       NOT: {
-        id: user.id, // Doğrulanan kullanıcı hariç diğer kullanıcılar bulunur.
+        id: user.id,
       },
+
+      // Kullanıcının takip etmediği kullanıcıları seç
       followers : {
         none: {
           followerId: user.id // Kullanıcının takip etmediği diğer kullanıcılar seçilir.

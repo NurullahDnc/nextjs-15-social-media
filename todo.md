@@ -96,8 +96,14 @@ export function useSubmitPostMutation() {
 
   const mutation = useMutation({
     mutationFn: submitPost,
-    onSuccess: (newPost) => {
-      // Post oluşturulduktan sonra veri güncelleniyor
+    onMutate: async (newPost) => {
+      // Mutasyon öncesi mevcut durumu iptal et
+      await queryClient.cancelQueries(["post-feed", "for-you"]);
+
+      // Önceki durumu al
+      const previousData = queryClient.getQueryData(["post-feed", "for-you"]);
+
+      // Yeni veriyi hemen arayüze ekle
       queryClient.setQueryData(["post-feed", "for-you"], (oldData) => ({
         ...oldData,
         pages: [
@@ -108,9 +114,16 @@ export function useSubmitPostMutation() {
           ...oldData.pages.slice(1),
         ],
       }));
+
+      // Hata durumunda önceki duruma dön
+      return { previousData };
+    },
+    onSuccess: () => {
       toast({ description: "Gönderi başarıyla oluşturuldu" });
     },
-    onError: () => {
+    onError: (error, newPost, context) => {
+      // Hata durumunda önceki duruma geri dön
+      queryClient.setQueryData(["post-feed", "for-you"], context.previousData);
       toast({
         variant: "destructive",
         description: "Gönderi oluşturulamadı. Lütfen tekrar deneyin.",
@@ -120,6 +133,7 @@ export function useSubmitPostMutation() {
 
   return mutation;
 }
+
 --
 
 */
@@ -146,7 +160,10 @@ ana div uzerine gelince hover olması, ana div ref ver(group-hover)  =>  group-h
 ///////// 
 <!--*Prisma   -->
 
-- prisma.upsert         =>  prismada eğer belirtilen kayıt zaten mevcutsa, onu günceller; eğer mevcut değilse, yeni bir kayıt oluşturur.
+- prisma.upsert       =>  prismada eğer belirtilen kayıt zaten mevcutsa, onu günceller; eğer mevcut değilse, yeni bir kayıt oluşturur.
 
-- prisma.delete:        =>  Tekil bir kaydı siler; belirli bir kayıt için kullanılır.
-- prisma.deleteMany:    =>  Birden fazla kaydı siler; bir dizi kaydı belirli koşullara göre hedef alır.
+- prisma.delete:      =>  Tekil bir kaydı siler; belirli bir kayıt için kullanılır.
+- prisma.deleteMany   =>  Birden fazla kaydı siler; bir dizi kaydı belirli koşullara göre hedef alır.
+- NOT                 =>  Belirtilen koşulun tam tersi olan verileri seçer. Yani, koşulu sağlamayan tüm kayıtları getirir.  ("giriş yapan kulanıcı haricindekileri al")
+- none                =>  İlişkili bir tabloda belirtilen koşula uyan hiçbir kayıt olmadığında kullanılır. Yani, koşula uyan hiçbir kayıt yoksa, bu şartı sağlar. ("takip edilmeyen kulanıcı gonderilerini al")
+
