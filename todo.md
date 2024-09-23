@@ -46,7 +46,8 @@ flatmap
 - prisma da follow tablosu olusturuldu. / apiler yazıldı get, create, edit, delete
 - Takip et / çıkar özelliği eklendi ve optimistik güncelleme kullanıldı.
 - user profil bitti 
-
+- Linkify kütüphanesi kullanılarak post içerisindeki hashtag'ler ve kullanıcı adları link haline getirildi.
+- userAvatar, username ve linklere tooltip eklendi.
 
 
 
