@@ -95,12 +95,12 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
       <UserAvatar
         avatarUrl={user.avatarUrl}
         size={250}
-        className="mx-auto size-full max-h-60 max-w-60 rounded-full"
+        className="mx-auto size-full max-h-40 md:max-h-52 max-w-40 md:max-w-52 rounded-full"
       />
       <div className="flex flex-wrap gap-3 sm:flex-nowrap">
         <div className="me-auto space-y-3">
           <div>
-            <h1 className="text-3xl font-bold">{user.displayName}</h1>
+            <h1 className=" text-2xl md:text-3xl font-bold">{user.displayName}</h1>
             <div className="text-muted-foreground">@{user.username}</div>
           </div>
           <div>

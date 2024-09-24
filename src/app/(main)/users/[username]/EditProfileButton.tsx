@@ -4,6 +4,7 @@
 import { Button } from "@/components/ui/button";
 import { userData } from "@/lib/types";
 import { useState } from "react";
+import EditProfileDialog from "./EditProfileDialog";
 
 interface EditProfileButtonProps {
   user: userData;
@@ -15,13 +16,13 @@ export default function EditProfileButton({ user }: EditProfileButtonProps) {
   return (
     <>
       <Button variant="outline" onClick={() => setShowDialog(true)}>
-        Edit profile
+        Profil Güncelle 
       </Button>
-      {/* <EditProfileDialog
+      <EditProfileDialog
         user={user}
         open={showDialog}
         onOpenChange={setShowDialog}
-      /> */}
+      />
     </>
   );
 }

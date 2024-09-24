@@ -20,7 +20,7 @@ export default function UserPosts({userId}: UserPostsProps) {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["post-users", "user-posts", userId],
+    queryKey: ["post-feed", "user-posts", userId],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(

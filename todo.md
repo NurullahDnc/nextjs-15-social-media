@@ -48,7 +48,9 @@ flatmap
 - user profil bitti 
 - Linkify kütüphanesi kullanılarak post içerisindeki hashtag'ler ve kullanıcı adları link haline getirildi.
 - userAvatar, username ve linklere tooltip eklendi.
-
+- img yuklemesi icin  uploadthing  kulanıldı ve amazon 3 kulanılacak  ve image kesemek icin react-cropper kutuphanesi kulanıldı.
+- profil guncelleme yapıldı
+- 
 
 
 
