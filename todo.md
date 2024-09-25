@@ -52,7 +52,7 @@ flatmap
 - profil guncelleme yapıldı
 - gonderi olusturmada image ve video ekleme entegre edildi
 - "useDropzone" kütüphanesi ile input dosya alanına sürükle-bırak ve yapıştır yoluyla medya ekleme
-- 
+- canlı ortamda Veritabanında ve Uploadthing de kullanılmayan medya dosyalarını silinecek
 
 
 
@@ -169,4 +169,4 @@ ana div uzerine gelince hover olması, ana div ref ver(group-hover)  =>  group-h
 - prisma.deleteMany   =>  Birden fazla kaydı siler; bir dizi kaydı belirli koşullara göre hedef alır.
 - NOT                 =>  Belirtilen koşulun tam tersi olan verileri seçer. Yani, koşulu sağlamayan tüm kayıtları getirir.  ("giriş yapan kulanıcı haricindekileri al")
 - none                =>  İlişkili bir tabloda belirtilen koşula uyan hiçbir kayıt olmadığında kullanılır. Yani, koşula uyan hiçbir kayıt yoksa, bu şartı sağlar. ("takip edilmeyen kulanıcı gonderilerini al")
-
+-  in                 =>  id degerleri eşit olanları getir
