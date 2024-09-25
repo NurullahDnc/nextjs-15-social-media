@@ -69,7 +69,7 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
     <div
       className={cn(
         "flex flex-col gap-3",
-        attachments.length > 1 && "sm:grid sm:grid-cols-2" ,
+        attachments.length > 1 ? "grid grid-cols-2 sm:grid-cols-2" : "grid grid-cols-1",
       )}
     >
       {attachments.map((attachment) => (
