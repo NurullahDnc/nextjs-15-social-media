@@ -16,6 +16,9 @@ import { ImageIcon, Loader2, X } from "lucide-react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useDropzone } from "@uploadthing/react";
+import { ClipboardEventHandler } from 'react'; // React olay tiplerini içeri aktar
+
 
 //Post Create components
 export default function PostEditor() {
@@ -32,6 +35,13 @@ export default function PostEditor() {
     removeAttachment,
     reset: resetMediaUploads,
   } = useMediaUpload();
+
+  //dosya surukle bırak input uzerine
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: startUpload,
+  });
+
+  const { onClick, ...rootProps } = getRootProps();
 
   const editor = useEditor({
     extensions: [
@@ -72,14 +82,31 @@ export default function PostEditor() {
     );
   }
 
+// Kopyalanan medyayı input alanına yapıştırma func.
+const onPaste: ClipboardEventHandler<HTMLDivElement> = (e) => {
+    // clipboardData'dan öğeleri alın
+    const files = Array.from(e.clipboardData?.items || [])   
+      .filter((item) => item.kind === 'file')   
+      .map((item) => item.getAsFile())   
+  
+      .filter((file): file is File => file !== null);   
+  
+    startUpload(files);   
+  };
+
   return (
     <div className="flex flex-col gap-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex gap-5">
         <UserAvatar avatarUrl={user.avatarUrl} className="hidden sm:inline" />
-        <EditorContent
-          editor={editor}
-          className="max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
-        />
+        <div {...rootProps} className="w-full">
+          <EditorContent
+            editor={editor}
+            className={cn("max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3", isDragActive && "outline-dashed")}
+            onPaste={onPaste}
+          />
+
+          <input {...getInputProps()} />
+        </div>
       </div>
 
       {/* Yuklenmis image video varsa goster */}

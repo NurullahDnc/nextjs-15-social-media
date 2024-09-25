@@ -51,8 +51,8 @@ flatmap
 - img yuklemesi icin  uploadthing  kulanıldı ve amazon 3 kulanılacak  ve image kesemek icin react-cropper kutuphanesi kulanıldı.
 - profil guncelleme yapıldı
 - gonderi olusturmada image ve video ekleme entegre edildi
-
-
+- "useDropzone" kütüphanesi ile input dosya alanına sürükle-bırak ve yapıştır yoluyla medya ekleme
+- 
 
 
 
