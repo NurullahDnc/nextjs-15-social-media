@@ -12,7 +12,7 @@ export const fileRouter = {
     .middleware(async ({ req }) => {
       const { user } = await validateRequest();
 
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!user) throw new UploadThingError("Yetkilendirme hatası");
 
       return { user };
     })
@@ -38,6 +38,31 @@ export const fileRouter = {
       });
 
       return { avatarUrl: newAvatarUrl };
+    }),
+
+  attachment: f({
+    image: { maxFileSize: "4MB", maxFileCount: 5 },
+    video: { maxFileSize: "64MB", maxFileCount: 5 },
+  })
+    .middleware(async ({ req }) => {
+      const { user } = await validateRequest();
+
+      if (!user) throw new UploadThingError("Yetkilendirme hatası");
+
+      return { user };
+    })
+    .onUploadComplete(async ({ file }) => {
+      const media = await prisma.media.create({
+        data: {
+          url: file.url.replace(
+            "/f/",
+            `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+          ),
+          type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
+        },
+      });
+
+      return { mediaId: media.id };
     }),
 } satisfies FileRouter;
 

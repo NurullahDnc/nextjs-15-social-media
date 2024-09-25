@@ -11,6 +11,11 @@ import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSubmitPostMutation } from "./mutations";
 import LoadingButton from "@/components/LoadingButton";
+import useMediaUpload, { Attachment } from "./useMediaUpload";
+import { ImageIcon, Loader2, X } from "lucide-react";
+import { useRef } from "react";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 //Post Create components
 export default function PostEditor() {
@@ -19,6 +24,14 @@ export default function PostEditor() {
   const queryClient = useQueryClient();
   const mutation = useSubmitPostMutation();
 
+  const {
+    startUpload,
+    attachments,
+    isUploading,
+    uploadProgress,
+    removeAttachment,
+    reset: resetMediaUploads,
+  } = useMediaUpload();
 
   const editor = useEditor({
     extensions: [
@@ -43,11 +56,20 @@ export default function PostEditor() {
     // queryClient.refetchQueries({ queryKey: ["post-feed", "for-you"] });
 
     // mutation.mutate(input, { ... }) ile input, submitPost fonksiyonuna otomatik olarak props gönderilir.
-    mutation.mutate(input, {  
-      onSuccess: () => {
-        editor?.commands.clearContent();
+    mutation.mutate(
+      {
+        content: input,
+        mediaIds: attachments
+          .map((att) => att.mediaId)
+          .filter(Boolean) as string[],
       },
-    });
+      {
+        onSuccess: () => {
+          editor?.commands.clearContent();
+          resetMediaUploads();
+        },
+      },
+    );
   }
 
   return (
@@ -59,16 +81,149 @@ export default function PostEditor() {
           className="max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
         />
       </div>
+
+      {/* Yuklenmis image video varsa goster */}
+      {!!attachments.length && (
+        <AttachmentPreviews
+          attachments={attachments}
+          removeAttachment={removeAttachment}
+        />
+      )}
+
+      {/* Yukleme durum ilerlemesi */}
       <div className="flex justify-end">
+        {isUploading && (
+          <>
+            <span className="text-sm">{uploadProgress ?? 0}%</span>
+            <Loader2 className="size-5 animate-spin text-primary" />
+          </>
+        )}
+
+        <AddAttachmentsButton
+          disabled={isUploading || arguments.length >= 5}
+          onFilesSelected={startUpload}
+        />
         <LoadingButton
           onClick={onSubmit}
-          disabled={!input.trim()}
+          disabled={!input.trim() || isUploading}
           loading={mutation.isPending}
           className="min-w-20 cursor-pointer"
         >
           Gönder
         </LoadingButton>
       </div>
+    </div>
+  );
+}
+
+interface AddAttachmentsButtonProps {
+  onFilesSelected: (files: File[]) => void;
+  disabled: boolean;
+}
+
+// media dosya yükleme butonu bileşeni
+function AddAttachmentsButton({
+  onFilesSelected,
+  disabled,
+}: AddAttachmentsButtonProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-primary hover:text-primary"
+        disabled={disabled}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <ImageIcon size={20} />
+      </Button>
+
+      <input
+        type="file"
+        accept="image/*, video/*"
+        multiple
+        ref={fileInputRef}
+        className="sr-only hidden"
+        onChange={(e) => {
+          const files = Array.from(e.target.files || []);
+          if (files.length) {
+            onFilesSelected(files);
+            e.target.value = "";
+          }
+        }}
+      />
+    </>
+  );
+}
+
+interface AttachmentPreviewsProps {
+  attachments: Attachment[];
+  removeAttachment: (fileName: string) => void;
+}
+
+// media dosya önizleme bileşeni
+function AttachmentPreviews({
+  attachments,
+  removeAttachment,
+}: AttachmentPreviewsProps) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-3",
+        attachments.length > 1 && "sm:grid sm:grid-cols-2",
+      )}
+    >
+      {attachments.map((attachment) => (
+        <AttachmentPreview
+          key={attachment.file.name}
+          attachment={attachment}
+          onRemoveClick={() => removeAttachment(attachment.file.name)}
+        />
+      ))}
+    </div>
+  );
+}
+
+interface AttachmentPreviewProps {
+  attachment: Attachment;
+  onRemoveClick: () => void;
+}
+
+// Tek bir dosya önizleme bileşeni
+function AttachmentPreview({
+  attachment: { file, mediaId, isUploading },
+  onRemoveClick,
+}: AttachmentPreviewProps) {
+  const src = URL.createObjectURL(file);
+
+  return (
+    <div
+      className={cn("relative mx-auto size-fit", isUploading && "opacity-50")}
+    >
+      {file.type.startsWith("image") ? (
+        <Image
+          src={src}
+          alt="attachment preview"
+          width={500}
+          height={500}
+          className="size-fit max-h-[30rem] rounded-2xl"
+        />
+      ) : (
+        <video controls className="size max-h[30rem] rounded-2xl">
+          <source src={src} type={file.type} />
+        </video>
+      )}
+
+      {!isUploading && (
+        <button
+          onClick={onRemoveClick}
+          className="absolute right-3 top-3 rounded-full bg-foreground p-1.5 text-background transition-colors hover:bg-foreground/60"
+        >
+          <X size={20} />
+        </button>
+      )}
     </div>
   );
 }
