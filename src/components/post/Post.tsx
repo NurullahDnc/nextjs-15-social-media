@@ -36,8 +36,9 @@ export default function Post({ post }: PostProps) {
             </UserTooltip>
 
             <Link
-              href={`/users/${post.id}`}
+              href={`/posts/${post.id}`}
               className="block text-sm text-muted-foreground hover:underline"
+              suppressHydrationWarning
             >
               {formatRelativeDate(post.createdAt)}
             </Link>
@@ -51,7 +52,9 @@ export default function Post({ post }: PostProps) {
         )}
       </div>
       <Linkify>
-        <div className="whitespace-pre-line break-words">{post.content}</div>
+        <div className="whitespace-pre-line break-words">
+          {post.content.substring(0, 127)}...
+        </div>
       </Linkify>
       {!!post.attachments.length && (
         <MediaPreviews attachments={post.attachments} />
@@ -69,7 +72,9 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
     <div
       className={cn(
         "flex flex-col gap-3",
-        attachments.length > 1 ? "grid grid-cols-2 sm:grid-cols-2" : "grid grid-cols-1",
+        attachments.length > 1
+          ? "grid grid-cols-2 sm:grid-cols-2"
+          : "grid grid-cols-1",
       )}
     >
       {attachments.map((attachment) => (

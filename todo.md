@@ -53,7 +53,7 @@ flatmap
 - gonderi olusturmada image ve video ekleme entegre edildi
 - "useDropzone" kütüphanesi ile input dosya alanına sürükle-bırak ve yapıştır yoluyla medya ekleme
 - canlı ortamda Veritabanında ve Uploadthing de kullanılmayan medya dosyalarını silinecek
-
+- post detail yapıldı 
 
 
 
