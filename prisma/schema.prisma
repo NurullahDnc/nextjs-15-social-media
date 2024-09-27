@@ -29,6 +29,8 @@ model User {
   following    Follow[]  @relation("Following") // Kullanıcının takip ettiği
   followers    Follow[]  @relation("Followers") // Kullanıcıyı takip eden 
   likes Likes[]
+  bookmarks  Bookmark[]
+
 
   createdAt DateTime @default(now())
 
@@ -62,6 +64,7 @@ model Post {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Kullanıcı silindiğinde, ilgili session da silinir.
   attachments Media[]
   likes Likes[]
+  bookmarks  Bookmark[]
 
   createdAt   DateTime @default(now())
 
@@ -94,6 +97,21 @@ model Likes {
 
   @@unique([userId, postId])
   @@map("likes")
+}
+
+
+model Bookmark {
+  id     String    @id @default(cuid())
+  userId  String
+  postId String
+  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@map("bookmarks")
 }
 
 

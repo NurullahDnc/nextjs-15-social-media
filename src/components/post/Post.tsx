@@ -10,6 +10,7 @@ import UserTooltip from "../UserTooltip";
 import { Media } from "@prisma/client";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
+import BookmarkButton from "./BookmarkButton";
 
 interface PostProps {
   post: PostData;
@@ -53,24 +54,30 @@ export default function Post({ post }: PostProps) {
         )}
       </div>
       <Linkify>
-        <div className="whitespace-pre-line break-words">
-          {post.content}
-        </div>
+        <div className="whitespace-pre-line break-words">{post.content}</div>
       </Linkify>
       {!!post.attachments.length && (
         <MediaPreviews attachments={post.attachments} />
       )}
 
       <hr className="text-muted-foreground" />
-      <LikeButton 
-        postId={post.id}
-        initialState={{
-          likes : post._count.likes,
-          isLikedByUser: post.likes.some((like) => like.userId === user.id)
-        
-        }}
-      />
 
+      <div className="flex justify-between">
+        <LikeButton
+          postId={post.id}
+          initialState={{
+            likes: post._count.likes,
+            isLikedByUser: post.likes.some((like) => like.userId === user.id),
+          }}
+        />
+
+        <BookmarkButton
+          postId={post.id}
+          initialState={{
+            isBookmarksByUser: post.bookmarks.some((b) => b.userId === user.id),
+          }}
+        />
+      </div>
     </article>
   );
 }
