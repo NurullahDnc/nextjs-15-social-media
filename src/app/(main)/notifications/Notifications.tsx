@@ -79,8 +79,8 @@ export default function Notifications() {
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
       className="space-y-5"
     >
-      {notifications.map((notification) => (
-        <Notification notification={notification} />
+      {notifications.map((notification, i) => (
+        <Notification key={i} notification={notification} />
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>
