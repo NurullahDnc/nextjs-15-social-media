@@ -55,9 +55,9 @@ flatmap
 - canlı ortamda Veritabanında ve Uploadthing de kullanılmayan medya dosyalarını silinecek
 - post detail yapıldı 
 - Gönderilere beğenme ve kayıt etme butonu eklendi, optimistik güncelleme entegre edildi.
-- gonderilere yorum yapma, silme eklendi optimistik güncelleme ile
+- gonderilere yorum yapma, silme eklendi optimistik güncelleme kulanıldı
+- Post beğenme, yorum ve takip etme işlemlerinde bildirim oluşturuldu
 - 
-
 
 
 
@@ -173,3 +173,6 @@ ana div uzerine gelince hover olması, ana div ref ver(group-hover)  =>  group-h
 - NOT                 =>  Belirtilen koşulun tam tersi olan verileri seçer. Yani, koşulu sağlamayan tüm kayıtları getirir.  ("giriş yapan kulanıcı haricindekileri al")
 - none                =>  İlişkili bir tabloda belirtilen koşula uyan hiçbir kayıt olmadığında kullanılır. Yani, koşula uyan hiçbir kayıt yoksa, bu şartı sağlar. ("takip edilmeyen kulanıcı gonderilerini al")
 -  in                 =>  id degerleri eşit olanları getir
+
+- prisma.$transaction => bu işlemlerden biri başarısız olursa, diğerleri de otomatik olarak geri alınır.
+- PATCH              => PUT benzeri sadece belirli dataları guncellemek icin kulanılır, (true olanları false yap)

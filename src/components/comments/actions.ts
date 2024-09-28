@@ -19,14 +19,28 @@ export default async function submitComment({
 
   const { content: contentValidated } = createCommentSchema.parse({ content });
 
-  const newComment = await prisma.comment.create({
-    data: {
-      content: contentValidated,
-      userId: user.id,
-      postId: post.id,
-    },
-    include: getCommentDataInclude(user.id),
-  });
+  const [newComment] = await prisma.$transaction([
+    prisma.comment.create({
+      data: {
+        content: contentValidated,
+        userId: user.id,
+        postId: post.id,
+      },
+      include: getCommentDataInclude(user.id),
+    }),
+    ...(user.id !== post.user.id
+      ? [
+          prisma.notification.create({
+            data: {
+              issuerId: user.id,
+              recipientId: post.user.id,
+              postId: post.id,
+              type: "COMMENT",
+            },
+          }),
+        ]
+      : []),
+  ]);
 
   return newComment;
 }
@@ -45,10 +59,19 @@ export async function deleteComment(id: string) {
 
   if (comment.userId !== user.id) throw new Error("Yetkilendire Hatası");
 
-  const deletedComment = await prisma.comment.delete({
-    where: { id },
-    include: getCommentDataInclude(user.id),
-  });
+  const [deletedComment] = await prisma.$transaction([
+    prisma.comment.delete({
+      where: { id },
+      include: getCommentDataInclude(user.id),
+    }),
+    prisma.notification.deleteMany({
+      where: {
+        issuerId: user.id,
+
+        type: "COMMENT",
+      },
+    }),
+  ]);
 
   return deletedComment;
 }

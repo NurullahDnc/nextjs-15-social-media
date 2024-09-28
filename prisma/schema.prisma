@@ -16,22 +16,23 @@ datasource db {
 }
 
 model User {
-  id           String     @id
-  username     String     @unique
-  displayName  String
-  email        String?    @unique
-  passwordHash String?
-  googleId     String?
-  avatarUrl    String?
-  bio          String?
-  sessions     Session[]
-  posts        Post[]
-  following    Follow[]   @relation("Following") // Kullanıcının takip ettiği
-  followers    Follow[]   @relation("Followers") // Kullanıcıyı takip eden 
-  likes        Likes[]
-  bookmarks    Bookmark[]
-  comments     Comment[]
-
+  id                    String         @id
+  username              String         @unique
+  displayName           String
+  email                 String?        @unique
+  passwordHash          String?
+  googleId              String?
+  avatarUrl             String?
+  bio                   String?
+  sessions              Session[]
+  posts                 Post[]
+  following             Follow[]       @relation("Following") // Kullanıcının takip ettiği
+  followers             Follow[]       @relation("Followers") // Kullanıcıyı takip eden 
+  likes                 Likes[]
+  bookmarks             Bookmark[]
+  comments              Comment[]
+  receivedNotifications Notification[] @relation("Recipient") // Kullanıcının aldığı bildirimler
+  issuedNotifications   Notification[] @relation("Issuer")    // Kullanıcının verdiği bildirimler
 
   createdAt DateTime @default(now())
 
@@ -59,14 +60,15 @@ model Follow {
 }
 
 model Post {
-  id          String     @id @default(cuid())
-  content     String
-  userId      String
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade) // Kullanıcı silindiğinde, ilgili session da silinir.
-  attachments Media[]
-  likes       Likes[]
-  bookmarks   Bookmark[]
-  comments     Comment[]
+  id                  String         @id @default(cuid())
+  content             String
+  userId              String
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade) // Kullanıcı silindiğinde, ilgili session da silinir.
+  attachments         Media[]
+  likes               Likes[]
+  bookmarks           Bookmark[]
+  comments            Comment[]
+  linkedNotifications Notification[]
 
   createdAt DateTime @default(now())
 
@@ -99,8 +101,8 @@ model Comment {
   post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-  @@map("comments")
 
+  @@map("comments")
 }
 
 model Likes {
@@ -124,4 +126,26 @@ model Bookmark {
 
   @@unique([userId, postId])
   @@map("bookmarks")
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String            // Bildirimi alan kullanıcının kimliği
+  recipient   User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  issuerId    String            // Bildirimi veren kullanıcının kimliği
+  issuer      User             @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+  postId      String?
+  post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  read        Boolean          @default(false)
+  
+  createdAt   DateTime         @default(now())
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  LIKE
+  FOLLOW
+  COMMENT
 }

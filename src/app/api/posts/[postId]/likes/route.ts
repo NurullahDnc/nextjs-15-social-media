@@ -1,5 +1,3 @@
-
-
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { LikeInfo } from "@/lib/types";
@@ -16,54 +14,62 @@ export async function GET(
     }
 
     const post = await prisma.post.findUnique({
-        where: {id: postId},
-        select: {
-            likes: {
-                where: {
-                    userId: loggedInUser.id,
-                },
-                select: {
-                    userId: true
-                }
-            },
-            _count: {
-                select: {
-                    likes: true
-                },
-            }
-        }
-    })
+      where: { id: postId },
+      select: {
+        likes: {
+          where: {
+            userId: loggedInUser.id,
+          },
+          select: {
+            userId: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
+    });
 
     if (!post) {
-        return Response.json({ errors: "post bulunamadı" }, { status: 404 });
-      }
+      return Response.json({ errors: "post bulunamadı" }, { status: 404 });
+    }
 
-      const data: LikeInfo = {
-        likes: post._count.likes,
-        isLikedByUser: !!post.likes.length, 
-      };
+    const data: LikeInfo = {
+      likes: post._count.likes,
+      isLikedByUser: !!post.likes.length,
+    };
 
-      return Response.json(data);
-
+    return Response.json(data);
   } catch (error) {
     console.log(error);
     return Response.json({ error: "Internal Error" }, { status: 500 });
   }
 }
 
-
 export async function POST(
-    req: Request,
-    { params: { postId } }: { params: { postId: string } },
-  ) {
-    try {
-      const { user: loggedInUser } = await validateRequest();
-  
-      if (!loggedInUser) {
-        return Response.json({ errors: "Yetkisiz giriş" }, { status: 401 });
-      }
-  
-      await prisma.likes.upsert({
+  req: Request,
+  { params: { postId } }: { params: { postId: string } },
+) {
+  try {
+    const { user: loggedInUser } = await validateRequest();
+
+    if (!loggedInUser) {
+      return Response.json({ errors: "Yetkisiz giriş" }, { status: 401 });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { userId: true },
+    });
+
+    if (!post) {
+      return Response.json({ errors: "post bulunamadı" }, { status: 404 });
+    }
+
+    await prisma.$transaction([
+      prisma.likes.upsert({
         where: {
           userId_postId: {
             userId: loggedInUser.id,
@@ -75,38 +81,70 @@ export async function POST(
           postId,
         },
         update: {},
-      });
-  
-      return new Response();
-    } catch (error) {
-      console.log(error);
-      return Response.json({ error: "Internal Error" }, { status: 500 });
-    }
+      }),
+
+      ...(loggedInUser.id !== post.userId
+        ? [
+            prisma.notification.create({
+              data: {
+                issuerId: loggedInUser.id,
+                recipientId: post.userId,
+                postId,
+                type: "LIKE",
+              },
+            }),
+          ]
+        : []),
+    ]);
+
+    return new Response();
+  } catch (error) {
+    console.log(error);
+    return Response.json({ error: "Internal Error" }, { status: 500 });
   }
+}
 
+export async function DELETE(
+  req: Request,
+  { params: { postId } }: { params: { postId: string } },
+) {
+  try {
+    const { user: loggedInUser } = await validateRequest();
 
-  export async function DELETE(
-    req: Request,
-    { params: { postId } }: { params: { postId: string } },
-  ) {
-    try {
-      const { user: loggedInUser } = await validateRequest();
-  
-      if (!loggedInUser) {
-        return Response.json({ errors: "Yetkisiz giriş" }, { status: 401 });
-      }
-  
-      await prisma.likes.deleteMany({
+    if (!loggedInUser) {
+      return Response.json({ errors: "Yetkisiz giriş" }, { status: 401 });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { userId: true },
+    });
+
+    if (!post) {
+      return Response.json({ errors: "post bulunamadı" }, { status: 404 });
+    }
+
+    await prisma.$transaction([
+      prisma.likes.deleteMany({
         where: {
           userId: loggedInUser.id,
           postId: postId,
         },
-      });
-  
-      return new Response();
-    } catch (error) {
-      console.log(error);
-      return Response.json({ error: "Internal Error" }, { status: 500 });
-    }
+      }),
+
+      prisma.notification.deleteMany({
+        where: {
+          issuerId: loggedInUser.id,
+          recipientId: post.userId,
+          postId,
+          type: "LIKE",
+        },
+      }),
+    ]);
+
+    return new Response();
+  } catch (error) {
+    console.log(error);
+    return Response.json({ error: "Internal Error" }, { status: 500 });
   }
-  
+}

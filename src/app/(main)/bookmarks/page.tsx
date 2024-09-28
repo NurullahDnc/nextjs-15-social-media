@@ -2,6 +2,11 @@
 import React from 'react'
 import Bookmarks from './bookmarks'
 import TrendsSidebar from '@/components/TrendsSidebar'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "bookmarks"
+}
 
 export default function page() {
   return (
