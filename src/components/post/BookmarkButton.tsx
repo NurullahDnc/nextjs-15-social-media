@@ -38,7 +38,7 @@ export default function BookmarkButton({ postId, initialState }: LikeButtonProps
     onMutate: async () => {
 
       toast({
-        description: `Gönderi ${data.isBookmarksByUser ? "kaydedildi" : "kaldırıldı"}`
+        description: `Gönderi ${data.isBookmarksByUser ? "kaldırıldı" : "kaydedildi"}`
       })
         
         await queryClient.cancelQueries({ queryKey });

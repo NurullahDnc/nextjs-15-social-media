@@ -11,12 +11,19 @@ import { Media } from "@prisma/client";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 import BookmarkButton from "./BookmarkButton";
+import { useState } from "react";
+import { MessageSquare } from "lucide-react";
+import Comments from "../comments/Comments";
 
 interface PostProps {
   post: PostData;
 }
+
+// post func.
 export default function Post({ post }: PostProps) {
   const { user } = useSession();
+
+  const [showcomments, setShowComments] = useState(false);
 
   return (
     <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
@@ -63,14 +70,19 @@ export default function Post({ post }: PostProps) {
       <hr className="text-muted-foreground" />
 
       <div className="flex justify-between">
-        <LikeButton
-          postId={post.id}
-          initialState={{
-            likes: post._count.likes,
-            isLikedByUser: post.likes.some((like) => like.userId === user.id),
-          }}
-        />
-
+        <div className="flex items-center gap-2">
+          <LikeButton
+            postId={post.id}
+            initialState={{
+              likes: post._count.likes,
+              isLikedByUser: post.likes.some((like) => like.userId === user.id),
+            }}
+          />
+          <CommentButton
+            post={post}
+            onclick={() => setShowComments(!showcomments)}
+          />
+        </div>
         <BookmarkButton
           postId={post.id}
           initialState={{
@@ -78,6 +90,8 @@ export default function Post({ post }: PostProps) {
           }}
         />
       </div>
+      
+      {showcomments && <Comments post={post} />}
     </article>
   );
 }
@@ -86,6 +100,7 @@ interface MediaPreviewsProps {
   attachments: Media[];
 }
 
+// verilen medya eklerini alıp uygun bir grid düzeninde görüntüler.
 function MediaPreviews({ attachments }: MediaPreviewsProps) {
   return (
     <div
@@ -109,6 +124,7 @@ interface MediaPreviewProps {
   media: Media;
 }
 
+// medya türüne göre görüntü veya video önizlemesi sunar
 function MediaPreview({ media }: MediaPreviewProps) {
   if (media.type === "IMAGE") {
     return (
@@ -133,4 +149,21 @@ function MediaPreview({ media }: MediaPreviewProps) {
     );
   }
   return <p className="text-destructive">Desteklenmeyen medya türü</p>;
+}
+
+interface commentButtonProps {
+  post: PostData;
+  onclick: () => void;
+}
+
+// gonderi altında yorum icon buttonu
+function CommentButton({ post, onclick }: commentButtonProps) {
+  return (
+    <button onClick={onclick} className="flex items-center gap-2">
+      <MessageSquare className="size-5" />
+      <span className="text-sm font-medium tabular-nums">
+        {post._count.comments} <span className="hidden sm:inline"></span>
+      </span>
+    </button>
+  );
 }

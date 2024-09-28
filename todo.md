@@ -54,6 +54,9 @@ flatmap
 - "useDropzone" kütüphanesi ile input dosya alanına sürükle-bırak ve yapıştır yoluyla medya ekleme
 - canlı ortamda Veritabanında ve Uploadthing de kullanılmayan medya dosyalarını silinecek
 - post detail yapıldı 
+- Gönderilere beğenme ve kayıt etme butonu eklendi, optimistik güncelleme entegre edildi.
+- gonderilere yorum yapma, silme eklendi optimistik güncelleme ile
+- 
 
 
 

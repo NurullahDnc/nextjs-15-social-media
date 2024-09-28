@@ -46,7 +46,7 @@ export default function Bookmarks() {
   if (status === "success" && !posts.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground my-14 flex justify-center items-center text-lg">
-        Henüz post kaydedilmedi.
+        Henüz kaydedilmiş bir gönderi bulunmamaktadır.
       </p>
     );
   }
