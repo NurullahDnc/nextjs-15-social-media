@@ -8,7 +8,7 @@ interface PageProps {
 
 export function generateMetadata({ searchParams: { q } }: PageProps): Metadata {
   return {
-    title: `"${q}" için arama sonuçları`,
+    title: `&quot;${q}&quot; için arama sonuçları`,
   };
 }
 
@@ -18,7 +18,7 @@ export default function Page({ searchParams: { q } }: PageProps) {
       <div className="w-full min-w-0 space-y-5">
         <div className="rounded-2xl bg-card p-5 shadow-sm">
           <h1 className="line-clamp-2 break-all text-center text-2xl font-bold">
-            "{q}" için arama sonuçları
+            &quot;{q}&quot; için arama sonuçları
           </h1>
         </div>
         <SearchResults query={q} />
