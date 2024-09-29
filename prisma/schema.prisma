@@ -127,7 +127,7 @@ model Bookmark {
   @@unique([userId, postId])
   @@map("bookmarks")
 }
-
+ 
 model Notification {
   id          String           @id @default(cuid())
   recipientId String            // Bildirimi alan kullanıcının kimliği
