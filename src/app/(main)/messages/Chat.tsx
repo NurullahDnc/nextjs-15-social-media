@@ -16,7 +16,7 @@ export default function Chat() {
   const { resolvedTheme } = useTheme();
 
   // Yan menünün açık/kapalı durumunu yönetmek için durum değişkeni.
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   if (!chatClient) {
     return <Loader2 className="mx-auto my-3 animate-spin" />;
