@@ -58,7 +58,7 @@ flatmap
 - gonderilere yorum yapma, silme eklendi optimistik güncelleme kulanıldı
 - Post beğenme, yorum ve takip etme işlemlerinde bildirim oluşturuldu
 - chat entegre edildi getstream.io  paket kulanıldı.
-
+- search arama eklendi, gonderileri arıyor
 
 
 
@@ -152,7 +152,8 @@ export function useSubmitPostMutation() {
 ///////////
 <!--* Tailwind -->
 ana div uzerine gelince hover olması, ana div ref ver(group-hover)  =>  group-hover/post:opacity-100
-
+- line-clamp-2    =>  İki satırı aşan metni gizleyerek "..." ile kısaltır.
+- break-all    =>  Kelimeleri veya satırları gerektiğinde keserek taşmayı önler.
 
 
 ///////////

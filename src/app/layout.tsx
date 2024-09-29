@@ -25,8 +25,11 @@ export const metadata: Metadata = {
     // 'default', başlığın bir bölümde belirtilmediği durumda kullanılacak varsayılan başlıktır.
     default: "Meyras",
   },
-  description: "The social media app for powernerds",
+  description: "Güç meraklıları için sosyal medya uygulaması",
 };
+
+
+export const Logo = "Meyras"
 
 export default function RootLayout({
   children,
