@@ -57,7 +57,7 @@ flatmap
 - Gönderilere beğenme ve kayıt etme butonu eklendi, optimistik güncelleme entegre edildi.
 - gonderilere yorum yapma, silme eklendi optimistik güncelleme kulanıldı
 - Post beğenme, yorum ve takip etme işlemlerinde bildirim oluşturuldu
-- 
+- chat entegre edildi getstream.io  paket kulanıldı.
 
 
 

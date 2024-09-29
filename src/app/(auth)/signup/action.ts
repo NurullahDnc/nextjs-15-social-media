@@ -7,6 +7,7 @@ import { lucia } from "@/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import streamServerClient from "@/lib/stream";
 
 export async function signup(
   credentials: SiginUpValues,
@@ -49,14 +50,22 @@ export async function signup(
 
     const userId = generateIdFromEntropySize(10);
 
-    const createUser = await prisma.user.create({
-      data: {
+    await prisma.$transaction(async (tx) => {
+      await tx.user.create({
+        data: {
+          id: userId,
+          username,
+          displayName: username,
+          email,
+          passwordHash,
+        },
+      });
+      // Stream sohbet sunucusunda kullanıcıyı güncelle
+      await streamServerClient.upsertUser({
         id: userId,
         username,
-        displayName: username,
-        email,
-        passwordHash,
-      },
+        name: username,
+      });
     });
 
     const session = await lucia.createSession(userId, {});
