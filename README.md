@@ -58,10 +58,10 @@
   - getstream.io
 
 
-  ```react
+  ```nextjs
 npm i --legacy-peer-deps
-npm run dev
 
+npm run dev
 ```
 
 
